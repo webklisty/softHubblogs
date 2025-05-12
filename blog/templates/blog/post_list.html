@@ -1,0 +1,94 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}SoftHub Blog | Latest Posts{% endblock %}
+
+{% block content %}
+<div class="mb-5">
+    <h1 class="display-4 mb-4">SoftHub Blog</h1>
+    <p class="lead">Stay up to date with the latest insights from SoftHub Business Solutions.</p>
+</div>
+
+{% for post in posts %}
+<article class="card mb-4 post-card">
+    <div class="row g-0">
+        {% if post.featured_image %}
+        <div class="col-md-4">
+            <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.featured_image.url }}" class="img-fluid rounded-start post-card-image" alt="{{ post.title }}">
+            </a>
+        </div>
+        <div class="col-md-8">
+        {% else %}
+        <div class="col-md-12">
+        {% endif %}
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a href="{{ post.get_absolute_url }}" class="text-decoration-none">{{ post.title }}</a>
+                </h2>
+                <p class="card-text text-muted">
+                    <small>
+                        <i class="far fa-calendar-alt"></i> {{ post.created_at|date:"F j, Y" }} |
+                        <i class="far fa-user-circle"></i> {{ post.author.get_full_name|default:post.author.username }} |
+                        <i class="far fa-folder"></i> 
+                        {% for category in post.categories.all %}
+                            <a href="{{ category.get_absolute_url }}" class="text-decoration-none">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </small>
+                </p>
+                <div class="card-text mb-3">
+                    {{ post.get_excerpt|safe }}
+                </div>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read more</a>
+            </div>
+        </div>
+    </div>
+</article>
+{% empty %}
+<div class="alert alert-info">
+    <p class="mb-0">No posts available yet. Check back soon!</p>
+</div>
+{% endfor %}
+
+<!-- Pagination -->
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
