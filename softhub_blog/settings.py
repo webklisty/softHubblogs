@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d3v3l0pm3nt-k3y-n0t-f0r-pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '.replit.dev', '.repl.co', '.repl.it']
+ALLOWED_HOSTS = ['*','localhost', '.render.com', '127.0.0.1', '0.0.0.0', '.replit.dev', '.repl.co', '.repl.it']
 
 # Application definition
 
