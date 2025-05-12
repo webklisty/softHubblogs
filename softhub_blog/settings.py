@@ -19,6 +19,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*','localhost', '.render.com', '127.0.0.1', '0.0.0.0', '.replit.dev', '.repl.co', '.repl.it']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://softhubblogs-3.onrender.com',  # ✅ exact match
+]
+
+
 # Application definition
 
 INSTALLED_APPS = [
